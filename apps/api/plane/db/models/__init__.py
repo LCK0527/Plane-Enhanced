@@ -24,6 +24,7 @@ from .integration import (
     SlackProjectSync,
     WorkspaceIntegration,
 )
+from .checklist import ChecklistItem
 from .issue import (
     CommentReaction,
     Issue,

@@ -182,10 +182,14 @@ class BaseAPIView(TimezoneMixin, ReadReplicaControlMixin, APIView, BasePaginator
                 )
 
             if isinstance(e, ObjectDoesNotExist):
-                return Response(
-                    {"error": "The required object does not exist."},
-                    status=status.HTTP_404_NOT_FOUND,
+                import logging
+                logger = logging.getLogger("plane.api.request")
+                logger.exception(
+                    f"ObjectDoesNotExist in {self.__class__.__name__}: {e}",
+                    exc_info=e,
                 )
+                # 暫時不要吃掉錯誤，直接丟出去，看完整 traceback
+                raise
 
             if isinstance(e, KeyError):
                 return Response(
@@ -211,7 +215,7 @@ class BaseAPIView(TimezoneMixin, ReadReplicaControlMixin, APIView, BasePaginator
 
         except Exception as exc:
             response = self.handle_exception(exc)
-            return exc
+            return response
 
     @property
     def workspace_slug(self):

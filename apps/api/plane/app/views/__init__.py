@@ -146,6 +146,8 @@ from .issue.reaction import IssueReactionViewSet
 
 from .issue.sub_issue import SubIssuesEndpoint
 
+from .issue.checklist import ChecklistEndpoint, ChecklistItemEndpoint
+
 from .issue.subscriber import IssueSubscriberViewSet
 
 from .issue.version import IssueVersionEndpoint, WorkItemDescriptionVersionEndpoint
