@@ -455,6 +455,9 @@ export default {
     quick_tutorial: {
       title: "Quick tutorial",
     },
+    unassigned_work_items: {
+      title: "Unassigned works",
+    },
     widget: {
       reordered_successfully: "Widget reordered successfully.",
       reordering_failed: "Error occurred while reordering widget.",

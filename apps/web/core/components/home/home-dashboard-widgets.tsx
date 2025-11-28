@@ -19,6 +19,7 @@ import { StickiesWidget } from "../stickies/widget";
 import { HomeLoader, NoProjectsEmptyState, RecentActivityWidget } from "./widgets";
 import { DashboardQuickLinks } from "./widgets/links";
 import { ManageWidgetsModal } from "./widgets/manage";
+import { UnassignedWorkItemsWidget } from "./widgets/unassigned-work-items";
 
 export const HOME_WIDGETS_LIST: {
   [key in THomeWidgetKeys]: {
@@ -51,6 +52,11 @@ export const HOME_WIDGETS_LIST: {
     component: null,
     fullWidth: false,
     title: "home.quick_tutorial.title",
+  },
+  unassigned_work_items: {
+    component: UnassignedWorkItemsWidget,
+    fullWidth: false,
+    title: "home.unassigned_work_items.title",
   },
 };
 

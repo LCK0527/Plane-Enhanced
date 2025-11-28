@@ -20,6 +20,7 @@ import { PriorityDropdown } from "@/components/dropdowns/priority";
 import { StateDropdown } from "@/components/dropdowns/state/dropdown";
 import { ParentIssuesListModal } from "@/components/issues/parent-issues-list-modal";
 import { IssueLabelSelect } from "@/components/issues/select";
+import { PriorityQuickSelect } from "./priority-quick-select";
 // helpers
 // hooks
 import { useProjectEstimates } from "@/hooks/store/estimates";
@@ -80,10 +81,29 @@ export const IssueDefaultProperties = observer(function IssueDefaultProperties(p
   maxDate?.setDate(maxDate.getDate());
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <Controller
-        control={control}
-        name="state_id"
+    <>
+      {/* Priority Quick Select - Only show when creating new issue */}
+      {!id && (
+        <div className="mb-3 pb-3 border-b border-custom-border-200">
+          <Controller
+            control={control}
+            name="priority"
+            render={({ field: { value, onChange } }) => (
+              <PriorityQuickSelect
+                value={value}
+                onChange={(priority) => {
+                  onChange(priority);
+                  handleFormChange();
+                }}
+              />
+            )}
+          />
+        </div>
+      )}
+      <div className="flex flex-wrap items-center gap-2">
+        <Controller
+          control={control}
+          name="state_id"
         render={({ field: { value, onChange } }) => (
           <div className="h-7">
             <StateDropdown
@@ -332,6 +352,7 @@ export const IssueDefaultProperties = observer(function IssueDefaultProperties(p
           />
         )}
       />
-    </div>
+      </div>
+    </>
   );
 });

@@ -135,7 +135,7 @@ export const BoardToolbar = observer(function BoardToolbar(props: BoardToolbarPr
           newFilters = {
             ...newFilters,
             assignee_id__in: [currentUser.id],
-          };
+          } as any;
         }
       } else if (filterType === "high_priority") {
         // Toggle: if already filtered, clear; otherwise set
@@ -146,7 +146,7 @@ export const BoardToolbar = observer(function BoardToolbar(props: BoardToolbarPr
           newFilters = {
             ...newFilters,
             priority__in: ["urgent", "high"],
-          };
+          } as any;
         }
       } else if (filterType === "due_this_week") {
         // Toggle: if already filtered, clear; otherwise set
@@ -160,7 +160,7 @@ export const BoardToolbar = observer(function BoardToolbar(props: BoardToolbarPr
           newFilters = {
             ...newFilters,
             target_date__range: [today.toISOString().split("T")[0], nextWeek.toISOString().split("T")[0]],
-          };
+          } as any;
         }
       }
 

@@ -263,9 +263,8 @@ export class WorkspaceService extends APIService {
   }
 
   async getViewIssues(workspaceSlug: string, params: any, config = {}): Promise<TIssuesResponse> {
-    const path = params.expand?.includes("issue_relation")
-      ? `/api/workspaces/${workspaceSlug}/issues-detail/`
-      : `/api/workspaces/${workspaceSlug}/issues/`;
+    // Use the workspace issues endpoint (WorkspaceViewIssuesViewSet)
+    const path = `/api/workspaces/${workspaceSlug}/issues/`;
     return this.get(
       path,
       {
