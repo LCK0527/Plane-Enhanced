@@ -16,6 +16,7 @@ type Props = {
   disabled?: boolean;
   tabIndex?: number;
   menuButton?: React.ReactNode;
+  customButton?: React.ReactNode;
   isFiltersApplied?: boolean;
 };
 
@@ -29,6 +30,7 @@ export function FiltersDropdown(props: Props) {
     disabled = false,
     tabIndex,
     menuButton,
+    customButton,
     isFiltersApplied = false,
   } = props;
 
@@ -47,7 +49,9 @@ export function FiltersDropdown(props: Props) {
         return (
           <>
             <Popover.Button as={React.Fragment}>
-              {menuButton ? (
+              {customButton ? (
+                <div ref={setReferenceElement}>{customButton}</div>
+              ) : menuButton ? (
                 <button role="button" ref={setReferenceElement}>
                   {menuButton}
                 </button>

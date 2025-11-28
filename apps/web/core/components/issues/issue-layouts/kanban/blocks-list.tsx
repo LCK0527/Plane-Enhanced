@@ -1,7 +1,7 @@
 import type { MutableRefObject } from "react";
 import { observer } from "mobx-react";
 // plane imports
-import type { TIssue, IIssueDisplayProperties, IIssueMap } from "@plane/types";
+import type { TIssue, IIssueDisplayProperties, IIssueMap, TBoardCardSize } from "@plane/types";
 // local imports
 import type { TRenderQuickActions } from "../list/list-view-types";
 import { KanbanIssueBlock } from "./block";
@@ -19,6 +19,7 @@ interface IssueBlocksListProps {
   canDragIssuesInCurrentGrouping: boolean;
   scrollableContainerRef?: MutableRefObject<HTMLDivElement | null>;
   isEpic?: boolean;
+  cardSize?: TBoardCardSize;
 }
 
 export const KanbanIssueBlocksList = observer(function KanbanIssueBlocksList(props: IssueBlocksListProps) {
@@ -35,6 +36,7 @@ export const KanbanIssueBlocksList = observer(function KanbanIssueBlocksList(pro
     canEditProperties,
     scrollableContainerRef,
     isEpic = false,
+    cardSize = "default",
   } = props;
 
   return (
@@ -65,6 +67,7 @@ export const KanbanIssueBlocksList = observer(function KanbanIssueBlocksList(pro
                 canEditProperties={canEditProperties}
                 scrollableContainerRef={scrollableContainerRef}
                 isEpic={isEpic}
+                cardSize={cardSize}
               />
             );
           })}

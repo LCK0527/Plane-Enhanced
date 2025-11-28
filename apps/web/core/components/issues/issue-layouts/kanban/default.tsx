@@ -13,6 +13,7 @@ import type {
   TIssueKanbanFilters,
   TIssueGroupByOptions,
   TIssueOrderByOptions,
+  TBoardCardSize,
 } from "@plane/types";
 // constants
 import { ContentWrapper } from "@plane/ui";
@@ -63,6 +64,7 @@ export interface IKanBan {
   showEmptyGroup?: boolean;
   subGroupIndex?: number;
   isEpic?: boolean;
+  cardSize?: TBoardCardSize;
 }
 
 export const KanBan = observer(function KanBan(props: IKanBan) {
@@ -92,6 +94,7 @@ export const KanBan = observer(function KanBan(props: IKanBan) {
     dropErrorMessage,
     subGroupIndex = 0,
     isEpic = false,
+    cardSize = "default",
   } = props;
   // i18n
   const { t } = useTranslation();
@@ -225,6 +228,7 @@ export const KanBan = observer(function KanBan(props: IKanBan) {
                     loadMoreIssues={loadMoreIssues}
                     handleOnDrop={handleOnDrop}
                     isEpic={isEpic}
+                    cardSize={cardSize}
                   />
                 </RenderIfVisible>
               )}

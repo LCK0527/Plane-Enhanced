@@ -53,6 +53,8 @@ export type TIssueGroupingFilters = "active" | "backlog";
 
 export type TIssueExtraOptions = "show_empty_groups" | "sub_issue";
 
+export type TBoardCardSize = "compact" | "default" | "comfortable";
+
 export type TIssueParams =
   | "priority"
   | "state_group"
@@ -150,6 +152,9 @@ export interface IIssueDisplayFilterOptions {
   order_by?: TIssueOrderByOptions;
   show_empty_groups?: boolean;
   sub_issue?: boolean;
+  kanban?: {
+    card_size?: TBoardCardSize;
+  };
 }
 export interface IIssueDisplayProperties {
   assignee?: boolean;

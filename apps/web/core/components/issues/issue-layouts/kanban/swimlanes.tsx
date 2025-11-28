@@ -11,6 +11,7 @@ import type {
   TIssueKanbanFilters,
   TIssueGroupByOptions,
   TIssueOrderByOptions,
+  TBoardCardSize,
 } from "@plane/types";
 // UI
 import { Row } from "@plane/ui";
@@ -119,6 +120,7 @@ interface ISubGroupSwimlane extends ISubGroupSwimlaneHeader {
   quickAddCallback?: (projectId: string | null | undefined, data: TIssue) => Promise<TIssue | undefined>;
   scrollableContainerRef?: MutableRefObject<HTMLDivElement | null>;
   loadMoreIssues: (groupId?: string, subGroupId?: string) => void;
+  cardSize?: TBoardCardSize;
 }
 
 const SubGroupSwimlane = observer(function SubGroupSwimlane(props: ISubGroupSwimlane) {
@@ -144,6 +146,7 @@ const SubGroupSwimlane = observer(function SubGroupSwimlane(props: ISubGroupSwim
     scrollableContainerRef,
     handleOnDrop,
     orderBy,
+    cardSize = "default",
   } = props;
 
   const visibilitySubGroupBy = (
@@ -214,6 +217,7 @@ const SubGroupSwimlane = observer(function SubGroupSwimlane(props: ISubGroupSwim
                     orderBy={orderBy}
                     isDropDisabled={_list.isDropDisabled}
                     dropErrorMessage={_list.dropErrorMessage}
+                    cardSize={cardSize}
                   />
                 </div>
               )}
@@ -249,6 +253,7 @@ export interface IKanBanSwimLanes {
   canEditProperties: (projectId: string | undefined) => boolean;
   scrollableContainerRef?: MutableRefObject<HTMLDivElement | null>;
   orderBy: TIssueOrderByOptions | undefined;
+  cardSize?: TBoardCardSize;
 }
 
 export const KanBanSwimLanes = observer(function KanBanSwimLanes(props: IKanBanSwimLanes) {
@@ -273,6 +278,7 @@ export const KanBanSwimLanes = observer(function KanBanSwimLanes(props: IKanBanS
     addIssuesToView,
     quickAddCallback,
     scrollableContainerRef,
+    cardSize = "default",
   } = props;
   // store hooks
   const storeType = useIssueStoreType();
@@ -327,6 +333,7 @@ export const KanBanSwimLanes = observer(function KanBanSwimLanes(props: IKanBanS
           canEditProperties={canEditProperties}
           quickAddCallback={quickAddCallback}
           scrollableContainerRef={scrollableContainerRef}
+          cardSize={cardSize}
         />
       )}
     </div>

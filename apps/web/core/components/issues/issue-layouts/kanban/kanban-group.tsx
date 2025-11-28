@@ -18,6 +18,7 @@ import type {
   TSubGroupedIssues,
   TIssueGroupByOptions,
   TIssueOrderByOptions,
+  TBoardCardSize,
 } from "@plane/types";
 import { EIssueLayoutTypes } from "@plane/types";
 import { cn } from "@plane/utils";
@@ -64,6 +65,7 @@ interface IKanbanGroup {
   handleOnDrop: (source: GroupDropLocation, destination: GroupDropLocation) => Promise<void>;
   orderBy: TIssueOrderByOptions | undefined;
   isEpic?: boolean;
+  cardSize?: TBoardCardSize;
 }
 
 export const KanbanGroup = observer(function KanbanGroup(props: IKanbanGroup) {
@@ -88,6 +90,7 @@ export const KanbanGroup = observer(function KanbanGroup(props: IKanbanGroup) {
     scrollableContainerRef,
     handleOnDrop,
     isEpic = false,
+    cardSize = "default",
   } = props;
   // i18n
   const { t } = useTranslation();
@@ -303,6 +306,7 @@ export const KanbanGroup = observer(function KanbanGroup(props: IKanbanGroup) {
         canDropOverIssue={!canOverlayBeVisible}
         canDragIssuesInCurrentGrouping={canDragIssuesInCurrentGrouping}
         isEpic={isEpic}
+        cardSize={cardSize}
       />
 
       {shouldLoadMore && (isSubGroup ? <>{loadMore}</> : <KanbanIssueBlockLoader ref={setIntersectionElement} />)}

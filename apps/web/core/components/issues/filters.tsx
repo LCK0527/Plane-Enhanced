@@ -20,6 +20,7 @@ import {
   LayoutSelection,
   MobileLayoutSelection,
 } from "./issue-layouts/filters";
+import { BoardToolbar } from "./issue-layouts/kanban/board-toolbar";
 
 type Props = {
   currentProjectDetails: TProject | undefined;
@@ -52,6 +53,10 @@ export const HeaderFilters = observer(function HeaderFilters(props: Props) {
   const {
     issuesFilter: { issueFilters, updateFilters },
   } = useIssues(storeType);
+  
+  // Check if updateFilterExpression exists (may not be available for all store types)
+  const issuesFilterStore = useIssues(storeType).issuesFilter as any;
+  const updateFilterExpression = issuesFilterStore?.updateFilterExpression;
   // derived values
   const activeLayout = issueFilters?.displayFilters?.layout;
   const layoutDisplayFiltersOptions = ISSUE_STORE_TO_FILTERS_MAP[storeType]?.layoutOptions[activeLayout];
@@ -80,6 +85,14 @@ export const HeaderFilters = observer(function HeaderFilters(props: Props) {
     [workspaceSlug, projectId, updateFilters]
   );
 
+  const handleFilterExpressionUpdate = useCallback(
+    (filters: any) => {
+      if (!workspaceSlug || !projectId || !updateFilterExpression) return;
+      updateFilterExpression(workspaceSlug, projectId, filters);
+    },
+    [workspaceSlug, projectId, updateFilterExpression]
+  );
+
   return (
     <>
       <WorkItemsModal
@@ -88,6 +101,15 @@ export const HeaderFilters = observer(function HeaderFilters(props: Props) {
         projectDetails={currentProjectDetails ?? undefined}
         isEpic={storeType === EIssuesStoreType.EPIC}
       />
+      {/* Board Toolbar - Only show for Kanban layout */}
+      {activeLayout === EIssueLayoutTypes.KANBAN && (
+        <BoardToolbar
+          displayFilters={issueFilters?.displayFilters}
+          handleDisplayFiltersUpdate={handleDisplayFilters}
+          handleFilterExpressionUpdate={handleFilterExpressionUpdate}
+          storeType={storeType}
+        />
+      )}
       <div className="hidden @4xl:flex">
         <LayoutSelection
           layouts={LAYOUTS}

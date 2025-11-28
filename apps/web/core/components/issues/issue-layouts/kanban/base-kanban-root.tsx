@@ -90,6 +90,7 @@ export const BaseKanBanRoot = observer(function BaseKanBanRoot(props: IBaseKanBa
   const group_by = displayFilters?.group_by;
 
   const orderBy = displayFilters?.order_by;
+  const cardSize = displayFilters?.kanban?.card_size ?? "default";
 
   useEffect(() => {
     fetchIssues("init-loader", { canGroup: true, perPageCount: sub_group_by ? 10 : 30 }, viewId);
@@ -293,6 +294,7 @@ export const BaseKanBanRoot = observer(function BaseKanBanRoot(props: IBaseKanBa
                 handleOnDrop={handleOnDrop}
                 loadMoreIssues={fetchMoreIssues}
                 isEpic={isEpic}
+                cardSize={cardSize}
               />
             </div>
           </div>

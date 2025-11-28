@@ -10,7 +10,7 @@ import { useOutsideClickDetector } from "@plane/hooks";
 // types
 import { TOAST_TYPE, setToast } from "@plane/propel/toast";
 import { Tooltip } from "@plane/propel/tooltip";
-import type { TIssue, IIssueDisplayProperties, IIssueMap } from "@plane/types";
+import type { TIssue, IIssueDisplayProperties, IIssueMap, TBoardCardSize } from "@plane/types";
 import { EIssueServiceType } from "@plane/types";
 // ui
 import { ControlLink, DropIndicator } from "@plane/ui";
@@ -48,6 +48,7 @@ interface IssueBlockProps {
   scrollableContainerRef?: MutableRefObject<HTMLDivElement | null>;
   shouldRenderByDefault?: boolean;
   isEpic?: boolean;
+  cardSize?: TBoardCardSize;
 }
 
 interface IssueDetailsBlockProps {
@@ -58,10 +59,11 @@ interface IssueDetailsBlockProps {
   quickActions: TRenderQuickActions;
   isReadOnly: boolean;
   isEpic?: boolean;
+  cardSize?: TBoardCardSize;
 }
 
 const KanbanIssueDetailsBlock = observer(function KanbanIssueDetailsBlock(props: IssueDetailsBlockProps) {
-  const { cardRef, issue, updateIssue, quickActions, isReadOnly, displayProperties, isEpic = false } = props;
+  const { cardRef, issue, updateIssue, quickActions, isReadOnly, displayProperties, isEpic = false, cardSize = "default" } = props;
   // refs
   const menuActionRef = useRef<HTMLDivElement | null>(null);
   // states
@@ -118,15 +120,26 @@ const KanbanIssueDetailsBlock = observer(function KanbanIssueDetailsBlock(props:
       </div>
 
       <Tooltip tooltipContent={issue.name} isMobile={isMobile} renderByDefault={false}>
-        <div className="w-full line-clamp-1 text-sm text-custom-text-100">
+        <div
+          className={cn("w-full line-clamp-1 text-custom-text-100", {
+            "text-xs line-clamp-1": cardSize === "compact",
+            "text-sm": cardSize === "default",
+            "text-base line-clamp-2": cardSize === "comfortable",
+          })}
+        >
           <span>{issue.name}</span>
         </div>
       </Tooltip>
 
       <IssueProperties
-        className="flex flex-wrap items-center gap-2 whitespace-nowrap text-custom-text-300 pt-1.5"
+        className={cn("flex flex-wrap items-center gap-2 whitespace-nowrap text-custom-text-300", {
+          "pt-0.5 text-xs": cardSize === "compact",
+          "pt-1.5": cardSize === "default",
+          "pt-2 text-sm": cardSize === "comfortable",
+          "hidden": cardSize === "compact" && !displayProperties?.priority && !displayProperties?.labels,
+        })}
         issue={issue}
-        displayProperties={displayProperties}
+        displayProperties={cardSize === "compact" ? { priority: displayProperties?.priority, labels: displayProperties?.labels } : displayProperties}
         activeLayout="Kanban"
         updateIssue={updateIssue}
         isReadOnly={isReadOnly}
@@ -161,6 +174,7 @@ export const KanbanIssueBlock = observer(function KanbanIssueBlock(props: IssueB
     scrollableContainerRef,
     shouldRenderByDefault,
     isEpic = false,
+    cardSize = "default",
   } = props;
 
   const cardRef = useRef<HTMLAnchorElement | null>(null);
@@ -268,18 +282,26 @@ export const KanbanIssueBlock = observer(function KanbanIssueBlock(props: IssueB
           href={workItemLink}
           ref={cardRef}
           className={cn(
-            "block rounded border-[1px] outline-[0.5px] outline-transparent w-full border-custom-border-200 bg-custom-background-100 text-sm transition-all hover:border-custom-border-400",
+            "block rounded border-[1px] outline-[0.5px] outline-transparent w-full border-custom-border-200 bg-custom-background-100 transition-all hover:border-custom-border-400",
             { "hover:cursor-pointer": isDragAllowed },
             { "border border-custom-primary-70 hover:border-custom-primary-70": getIsIssuePeeked(issue.id) },
-            { "bg-custom-background-80 z-[100]": isCurrentBlockDragging }
+            { "bg-custom-background-80 z-[100]": isCurrentBlockDragging },
+            // Card size styles
+            { "px-2 py-1 text-xs": cardSize === "compact" },
+            { "px-3 py-2 text-sm": cardSize === "default" },
+            { "px-4 py-3 text-base": cardSize === "comfortable" }
           )}
           onClick={() => handleIssuePeekOverview(issue)}
           disabled={!!issue?.tempId}
         >
           <RenderIfVisible
-            classNames="space-y-2 px-3 py-2"
+            classNames={cn("space-y-2", {
+              "space-y-1 px-2 py-1": cardSize === "compact",
+              "space-y-2 px-3 py-2": cardSize === "default",
+              "space-y-3 px-4 py-3": cardSize === "comfortable",
+            })}
             root={scrollableContainerRef}
-            defaultHeight="100px"
+            defaultHeight={cardSize === "compact" ? "60px" : cardSize === "comfortable" ? "140px" : "100px"}
             horizontalOffset={100}
             verticalOffset={200}
             defaultValue={shouldRenderByDefault}
@@ -292,6 +314,7 @@ export const KanbanIssueBlock = observer(function KanbanIssueBlock(props: IssueB
               quickActions={quickActions}
               isReadOnly={!canEditIssueProperties}
               isEpic={isEpic}
+              cardSize={cardSize}
             />
           </RenderIfVisible>
         </ControlLink>
